@@ -1,7 +1,50 @@
-.vscode/
+# Dependências
+**/node_modules/
+**/dist/
+**/build/
+.angular/
+.sass-cache/
+
+# .NET / C# / Entity Framework
+**/bin/
+**/obj/
+**/publish/
+
+# Visual Studio / JetBrains Rider
 .vs/
-bin/
-obj/
+.idea/
+*.user
+*.userosscache
+*.sln.docstates
+
+# SQL Server Express / LocalDB
 *.mdf
 *.ldf
-appsettings.Development.json
+*.db
+*.sqlite
+
+# Segurança e Configurações Locais
+**/.env
+**/.env.local
+**/appsettings.Development.json
+**/appsettings.Local.json
+
+# IDEs e Editores
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+*.sublime-workspace
+*.swp
+*.swo
+
+# Logs e Arquivos de Sistema
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+desktop.ini
