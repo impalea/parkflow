@@ -1,0 +1,41 @@
+.main-header {
+	height: 64px;
+	background-color: #ffffff;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	display: flex;
+	align-items: center;
+	padding: 0 1.5rem;
+	
+	.header-container {
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 0.2rem;
+	font-size: 1.5rem;
+}
+
+.logo-text {
+	font-size: 1.5rem;
+	font-weight: 400;
+	color: var(--primary-color);
+	
+	span {
+		font-weight: 700;
+		color: var(--title-color);
+	}
+}
+
+.content-area {
+	padding: 2rem;
+	max-width: 1200px;
+	margin: 0 auto;
+}
