@@ -1,0 +1,11 @@
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-01', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-02', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-03', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-04', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-05', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('B-01', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('B-02', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('B-03', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('B-04', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('B-05', 0, 1);
+INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('X-99', 0, 0);
