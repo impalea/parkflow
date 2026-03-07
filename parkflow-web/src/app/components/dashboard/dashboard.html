@@ -1,0 +1,29 @@
+<div class="container">
+	<h1>Dashboard</h1>
+
+	<div class="grid">
+		@for (spot of spots(); track spot.parkingSpotId) {
+			<div class="card" [class.occupied]="spot.isOccupied">
+				<div class="card-header">
+					<strong>{{ spot.spotNumber }}</strong>
+					<span>{{ spot.isOccupied ? 'OCUPADA' : 'LIVRE' }}</span>
+				</div>
+
+				<div class="card-content">
+					@if (spot.isOccupied) {
+						<p class="plate">{{ spot.licensePlate }}</p>
+						<p class="model">{{ spot.model + ', ' + spot.color }}</p>
+						<button class="btn btn-checkout" (click)="doCheckOut(spot)">
+							Finalizar Estadia (Check-out)
+						</button>
+					} @else {
+						<p class="status-free">Disponível</p>
+						<button class="btn btn-checkin" (click)="doCheckIn(spot)">
+							Registrar Entrada (Check-in)
+						</button>
+					}
+				</div>
+			</div>
+		}
+	</div>
+</div>
