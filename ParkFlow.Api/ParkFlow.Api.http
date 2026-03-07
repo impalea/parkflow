@@ -1,0 +1,23 @@
+@hostname = localhost
+@port = 5115
+@host = http://{{hostname}}:{{port}}
+
+### Realizar um Check-in Automático
+POST {{host}}/api/ticket/checkin
+Content-Type: application/json
+
+{
+  "licensePlate": "BRA2E24",
+  "model": "Onix",
+  "color": "Branco",
+  "parkingSpotId": null
+}
+
+### Ver Mapa de Vagas (Dashboard)
+GET {{host}}/api/parkingspot/dashboard
+
+### Simular Checkout (Preview)
+GET {{host}}/api/ticket/checkout/preview/1
+
+### Confirmar Saída
+POST {{host}}/api/ticket/checkout/1
