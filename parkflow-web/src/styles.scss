@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+	--primary-font: 'Google Sans', sans-serif;
+	--title-font: 'Google Sans', sans-serif;
+	--body-size: 1rem;
+	--bg-color: #f8f9fa;
+	--title-color: #1a73e8;
+	--primary-color: #3c4043;
+	--success-color: #28a745;
+	--danger-color: #dc3545;
+}
+
+body {
+	font-family: var(--primary-font);
+	font-size: var(--body-size);
+	background-color: var(--bg-color);
+	color: var(--primary-color);
+	margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--title-font);
+	color: var(--title-color);
+}
+
+button, input, select, textarea {
+	font-family: inherit;
+}
