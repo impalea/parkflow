@@ -1,3 +1,5 @@
+USE ParkFlow;
+
 INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-01', 0, 1);
 INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-02', 0, 1);
 INSERT INTO ParkingSpots (SpotNumber, IsOccupied, IsActive) VALUES ('A-03', 0, 1);
