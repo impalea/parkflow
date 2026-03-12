@@ -4,6 +4,7 @@
 **/build/
 .angular/
 .sass-cache/
+**/environment.development.ts
 
 # .NET / C# / Entity Framework
 **/bin/
