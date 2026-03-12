@@ -5,11 +5,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+                     ?? throw new InvalidOperationException("'AllowedOrigins' not found in appsettings.json.");
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngular", policy =>
+    options.AddPolicy("ParkFlowCors", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -29,7 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowAngular");
+app.UseCors("ParkFlowCors");
 
 app.UseAuthorization();
 
