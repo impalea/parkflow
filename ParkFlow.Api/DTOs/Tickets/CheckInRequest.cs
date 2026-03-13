@@ -5,7 +5,7 @@ namespace ParkFlow.Api.DTOs.Tickets
     public class CheckInRequest
 	{
 		[Required(ErrorMessage = "License plate is required.")]
-		[StringLength(8, MinimumLength = 7, ErrorMessage = "License plate must have 7-8 characters.")]
+		[StringLength(7, MinimumLength = 7, ErrorMessage = "License plate must have 7 characters.")]
 		public string LicensePlate { get; set; } = string.Empty;
 
 		[Required(ErrorMessage = "Model is required.")]

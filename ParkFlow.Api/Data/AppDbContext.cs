@@ -15,7 +15,7 @@ namespace ParkFlow.Api.Data
         {
             modelBuilder.Entity<VehicleModel>(entity => {
                 entity.HasIndex(v => v.LicensePlate).IsUnique();
-                entity.Property(v => v.LicensePlate).HasMaxLength(8).IsRequired();
+                entity.Property(v => v.LicensePlate).HasMaxLength(7).IsRequired();
                 entity.Property(v => v.Model).HasMaxLength(50).IsRequired();
                 entity.Property(v => v.Color).HasMaxLength(20);
             });
