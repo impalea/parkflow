@@ -1,25 +1,34 @@
 <div class="container">
-	<h1>Dashboard</h1>
+	<div class="dashboard-header">
+		<h1>Dashboard</h1>
 
-	<div class="grid">
+		<div class="parking-spot-summary">
+			<span class="summary-item">Total de vagas: <strong>{{ totalSpots() }}</strong></span>
+			<span class="divider">|</span>
+			<span class="summary-item available">Vagas disponíveis: <strong>{{ totalAvailable() }}</strong></span>
+			<span class="divider">|</span>
+			<span class="summary-item occupied">Vagas ocupadas: <strong>{{ totalOccupied() }}</strong></span>
+		</div>
+	</div>
+	<div class="cards-grid">
 		@for (spot of spots(); track spot.parkingSpotId) {
 			<div class="card" [class.occupied]="spot.isOccupied">
 				<div class="card-header">
-					<strong>{{ spot.spotNumber }}</strong>
+					<span>{{ spot.spotNumber }}</span>
 					<span>{{ spot.isOccupied ? 'OCUPADA' : 'LIVRE' }}</span>
 				</div>
 
 				<div class="card-content">
 					@if (spot.isOccupied) {
-						<p class="plate">{{ spot.licensePlate }}</p>
-						<p class="model">{{ spot.model + ', ' + spot.color }}</p>
-						<button class="btn btn-checkout" (click)="doCheckOut(spot)">
-							Finalizar Estadia (Check-out)
+						<p>{{ spot.licensePlate }}</p>
+						<p>{{ spot.model + ', ' + spot.color }}</p>
+						<button type="button" class="btn btn-checkout" (click)="doCheckOut(spot)">
+							Finalizar Estadia
 						</button>
 					} @else {
-						<p class="status-free">Disponível</p>
-						<button class="btn btn-checkin" (click)="doCheckIn(spot)">
-							Registrar Entrada (Check-in)
+						<p>Disponível</p>
+						<button type="button" class="btn btn-checkin" (click)="doCheckIn(spot)">
+							Registrar Entrada
 						</button>
 					}
 				</div>
@@ -27,3 +36,84 @@
 		}
 	</div>
 </div>
+
+@if (isCheckInModalOpen()) {
+  <div class="overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Check-in: Vaga {{ selectedSpot()?.spotNumber }}</h2>
+        <button class="btn-close" (click)="closeCheckInModal()">×</button>
+      </div>
+
+			<form #checkInFormRef="ngForm" (ngSubmit)="createCheckIn()">
+      	<div class="modal-body">
+					<div class="form-item">
+						<label>Placa do Veículo *</label>
+						<input type="text" id="plate" name="plate" required placeholder="ABC1234" minlength="7" maxlength="7"
+										#plate="ngModel" [(ngModel)]="checkInForm.licensePlate" [(ngModel)]="checkInForm.licensePlate"
+										(input)="checkInForm.licensePlate = checkInForm.licensePlate.toUpperCase().replace(/[^A-Z0-9]/g, '')">
+						@if (plate.invalid && plate.touched) {
+							<span class="error-message">Este campo é obrigatório e deve ter 7 caracteres.</span>
+						}
+					</div>
+
+					<div class="form-item">
+						<label>Modelo *</label>
+						<input type="text" id="model" name="model" required placeholder="Toyota Corolla" #model="ngModel" [(ngModel)]="checkInForm.model">
+						@if (model.invalid && model.touched) {
+							<span class="error-message">Este campo é obrigatório.</span>
+						}
+					</div>
+
+					<div class="form-item">
+						<label>Cor</label>
+						<input type="text" id="color" name="color" placeholder="Prata" #color="ngModel" [(ngModel)]="checkInForm.color">
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-cancel" (click)="closeCheckInModal()">Cancelar</button>
+					<button type="submit" class="btn btn-checkin-confirm" [disabled]="checkInFormRef.invalid">Confirmar Entrada</button>
+				</div>
+			</form>
+    </div>
+  </div>
+}
+
+@if (isCheckOutModalOpen()) {
+  <div class="overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Resumo de Saída</h2>
+        <button class="btn-close" (click)="closeCheckoutModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="summary-item">
+          <label>Veículo</label>
+          <p>{{ checkOutData()?.model }}, {{ checkOutData()?.color }} - {{ checkOutData()?.licensePlate }}</p>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-item">
+            <label>Entrada</label>
+            <p>{{ checkOutData()?.entryTime | date:'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div class="summary-item">
+            <label>Permanência</label>
+            <p class="time-highlight">{{ checkOutData()?.duration }}</p>
+          </div>
+        </div>
+
+        <p class="warning-notice">
+          ⚠️ Calcule o valor manualmente com base no tempo de permanência.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" (click)="closeCheckoutModal()">Cancelar</button>
+        <button type="button" class="btn btn-checkout-confirm" (click)="confirmCheckOut()">Confirmar Saída</button>
+      </div>
+    </div>
+  </div>
+}
