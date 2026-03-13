@@ -24,14 +24,18 @@ namespace ParkFlow.Api.Controllers
 
 			try
 			{
+				string cleanPlate = System.Text.RegularExpressions.Regex
+					.Replace(request.LicensePlate, @"[^a-zA-Z0-9]", "")
+					.ToUpper();
+
 				var vehicle = await _context.Vehicles
-					.FirstOrDefaultAsync(v => v.LicensePlate == request.LicensePlate);
+					.FirstOrDefaultAsync(v => v.LicensePlate == cleanPlate);
 
 				if (vehicle == null)
 				{
 					vehicle = new VehicleModel
 					{
-						LicensePlate = request.LicensePlate,
+						LicensePlate = cleanPlate,
 						Model = request.Model,
 						Color = request.Color
 					};
