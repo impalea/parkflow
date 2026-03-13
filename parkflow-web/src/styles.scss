@@ -3,23 +3,29 @@
 	--title-font: 'Google Sans', sans-serif;
 	--body-size: 1rem;
 	--bg-color: #f8f9fa;
-	--title-color: #1a73e8;
-	--primary-color: #3c4043;
-	--success-color: #28a745;
-	--danger-color: #dc3545;
+	--primary-text: #3c4043;
+	--secondary-text: #585858;
+	--primary-blue: #1a73e8;
+	--primary-green: #28a745;
+	--secondary-green: #f8fff9;
+	--primary-red: #dc3545;
+	--secondary-red: #fff8f8;
+	--primary-grey: #9aa0a6;
+	--secondary-grey: #e2e4e6;
+	--tertiary-grey: #e8eaed;
 }
 
 body {
 	font-family: var(--primary-font);
 	font-size: var(--body-size);
 	background-color: var(--bg-color);
-	color: var(--primary-color);
+	color: var(--primary-text);
 	margin: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: var(--title-font);
-	color: var(--title-color);
+	color: var(--primary-blue);
 }
 
 button, input, select, textarea {
