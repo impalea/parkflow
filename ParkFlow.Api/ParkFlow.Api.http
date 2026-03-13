@@ -2,7 +2,7 @@
 @port = 5115
 @host = http://{{hostname}}:{{port}}
 
-### Realizar um Check-in Automático
+### Realizar Checkin com vaga aleatória
 POST {{host}}/api/ticket/checkin
 Content-Type: application/json
 
@@ -13,11 +13,23 @@ Content-Type: application/json
   "parkingSpotId": null
 }
 
-### Ver Mapa de Vagas (Dashboard)
+### Realizar Check-in com vaga específica
+POST {{host}}/api/ticket/checkin
+Content-Type: application/json
+
+{
+  "licensePlate": "BRA3K56",
+  "model": "HB20",
+  "color": "Preto",
+  "parkingSpotId": 3
+}
+
+
+### Ver vagas (Dashboard)
 GET {{host}}/api/parkingspot/dashboard
 
-### Simular Checkout (Preview)
+### Simular Check-out (Preview)
 GET {{host}}/api/ticket/checkout/preview/1
 
-### Confirmar Saída
+### Confirmar Check-out
 POST {{host}}/api/ticket/checkout/1
