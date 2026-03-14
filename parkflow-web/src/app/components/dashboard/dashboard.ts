@@ -127,7 +127,7 @@ export class Dashboard implements OnInit {
 		this.checkInForm = { licensePlate: '', model: '', color: '', parkingSpotId: 0 };
 	}
 
-	closeCheckoutModal() {
+	closeCheckOutModal() {
 		this.isCheckOutModalOpen.set(false);
 		this.checkOutData.set(null);
 		this.currentTicketId = 0;
