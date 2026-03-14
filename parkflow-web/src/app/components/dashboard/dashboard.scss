@@ -13,7 +13,7 @@
 	}
 }
 
-.parking-spot-summary {
+.dashboard-summary {
   display: flex;
   align-items: center;
 	justify-content: center;
@@ -69,39 +69,94 @@
 }
 
 .card {
-	background-color: var(--secondary-green);
-	border: 2px solid var(--primary-green);
-	border-radius: 12px;
-	padding: 1.2rem;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	min-height: 180px;
-	transition: transform 0.2s, box-shadow 0.2s;
-
-	&:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	}
-
-	&.occupied {
-		border-color: var(--primary-red);
-		background-color: var(--secondary-red);
-	}
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 5px solid var(--primary-green);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
 	.card-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-		margin-bottom: 12px;
-		padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+
+    .spot-number {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+  }
+
+	.status span {
+		font-size: 2rem;
+		color: var(--primary-green);
 	}
+
+  &.occupied {
+    border-left-color: var(--primary-red);
+
+    .status span {
+			color: var(--primary-red);
+		}
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  }
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .vehicle-details {
+    label {
+      font-size: 0.8rem;
+			text-transform: uppercase;
+      color: var(--secondary-text);
+    }
+
+		.license-plate {
+			margin: 5px 0;
+		}
+
+    .model {
+      margin: 10px 0;
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+		justify-content: center;
+    color: #c7c7c7;
+    margin-bottom: 20px;
+
+    span {
+			font-size: 3rem;
+		}
+
+    p {
+			margin-top: 10px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+  }
 }
 
 .btn {
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 	width: 100%;
 	padding: 12px;
 	border: none;
@@ -173,7 +228,7 @@
   width: 90%;
   max-width: 450px;
   border-radius: 16px;
-  padding: 24px;
+  padding: 1.5rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.3s ease-out;
 }
@@ -265,7 +320,19 @@
 			margin: 5px 0;
 			font-size: 1.1rem;
 		}
+
+		strong {
+			font-size: 1.2rem;
+		}
 	}
+}
+
+.license-plate {
+	font-weight: bold;
+	color: var(--primary-text);
+	margin: 5px 0;
+	letter-spacing: 1px;
+	font-family: var(--license-plate-font);
 }
 
 .modal-footer {
@@ -277,7 +344,7 @@
 .time-highlight {
   color: var(--primary-blue);
   font-weight: bold;
-  font-size: 1.4rem !important;
+  font-size: 1.6rem !important;
 }
 
 .warning-notice {

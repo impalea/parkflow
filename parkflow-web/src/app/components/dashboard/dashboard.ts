@@ -132,6 +132,10 @@ export class Dashboard implements OnInit {
 		this.checkOutData.set(null);
 		this.currentTicketId = 0;
 	}
+
+	formatVehicleDetails(model?: string, color?: string): string {
+		return [model, color].filter(item => !!item).join(', ');
+	}
 }
 
 

@@ -2,7 +2,7 @@
 	<div class="dashboard-header">
 		<h1>Dashboard</h1>
 
-		<div class="parking-spot-summary">
+		<div class="dashboard-summary">
 			<span class="summary-item">Total de vagas: <strong>{{ totalSpots() }}</strong></span>
 			<span class="divider">|</span>
 			<span class="summary-item available">Vagas disponíveis: <strong>{{ totalAvailable() }}</strong></span>
@@ -10,24 +10,35 @@
 			<span class="summary-item occupied">Vagas ocupadas: <strong>{{ totalOccupied() }}</strong></span>
 		</div>
 	</div>
+
 	<div class="cards-grid">
 		@for (spot of spots(); track spot.parkingSpotId) {
 			<div class="card" [class.occupied]="spot.isOccupied">
 				<div class="card-header">
-					<span>{{ spot.spotNumber }}</span>
-					<span>{{ spot.isOccupied ? 'OCUPADA' : 'LIVRE' }}</span>
+					<span class="spot-number">{{ spot.spotNumber }}</span>
+					<span class="status">
+						<span class="material-symbols-outlined">{{ spot.isOccupied ? 'directions_car' : 'check_circle' }}</span>
+					</span>
 				</div>
 
 				<div class="card-content">
 					@if (spot.isOccupied) {
-						<p>{{ spot.licensePlate }}</p>
-						<p>{{ spot.model + ', ' + spot.color }}</p>
+						<div class="vehicle-details">
+							<label>Placa</label>
+							<h2 class="license-plate">{{ spot.licensePlate }}</h2>
+							<p class="model">{{ formatVehicleDetails(spot.model, spot.color) }}</p>
+						</div>
 						<button type="button" class="btn btn-checkout" (click)="doCheckOut(spot)">
+							<span class="material-symbols-outlined">logout</span>
 							Finalizar Estadia
 						</button>
 					} @else {
-						<p>Disponível</p>
+						<div class="empty-state">
+							<span class="material-symbols-outlined">parking_sign</span>
+							<p>Disponível</p>
+						</div>
 						<button type="button" class="btn btn-checkin" (click)="doCheckIn(spot)">
+							<span class="material-symbols-outlined">login</span>
 							Registrar Entrada
 						</button>
 					}
@@ -49,8 +60,9 @@
       	<div class="modal-body">
 					<div class="form-item">
 						<label>Placa do Veículo *</label>
-						<input type="text" id="plate" name="plate" required placeholder="ABC1234" minlength="7" maxlength="7"
-										#plate="ngModel" [(ngModel)]="checkInForm.licensePlate" [(ngModel)]="checkInForm.licensePlate"
+						<input type="text" id="plate" name="plate" class="license-plate" required
+										placeholder="ABC1234" minlength="7" maxlength="7"
+										#plate="ngModel" [(ngModel)]="checkInForm.licensePlate"
 										(input)="checkInForm.licensePlate = checkInForm.licensePlate.toUpperCase().replace(/[^A-Z0-9]/g, '')">
 						@if (plate.invalid && plate.touched) {
 							<span class="error-message">Este campo é obrigatório e deve ter 7 caracteres.</span>
@@ -91,13 +103,13 @@
       <div class="modal-body">
         <div class="summary-item">
           <label>Veículo</label>
-          <p>{{ checkOutData()?.model }}, {{ checkOutData()?.color }} - {{ checkOutData()?.licensePlate }}</p>
+          <p>{{ formatVehicleDetails(checkOutData()?.model, checkOutData()?.color) }} - <strong class="license-plate">{{ checkOutData()?.licensePlate }}</strong></p>
         </div>
 
         <div class="summary-grid">
           <div class="summary-item">
             <label>Entrada</label>
-            <p>{{ checkOutData()?.entryTime | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p>{{ checkOutData()?.entryTime | date:'E, dd/MM/yyyy, HH:mm' }}</p>
           </div>
           <div class="summary-item">
             <label>Permanência</label>
