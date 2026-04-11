@@ -5,6 +5,9 @@ header {
 	display: flex;
 	align-items: center;
 	padding: 0 1.5rem;
+	position: sticky;
+	top: 0;
+  z-index: 1000;
 
 	.container {
 		width: 100%;
@@ -21,15 +24,36 @@ header {
 	align-items: center;
 	gap: 0.2rem;
 	font-size: 1.5rem;
+	cursor: pointer;
+
+	&-text {
+		font-size: 1.5rem;
+		color: var(--primary-text);
+
+		strong {
+			color: var(--primary-blue);
+		}
+	}
 }
 
-.logo-text {
-	font-size: 1.5rem;
-	color: var(--primary-text);
+.btn-settings {
+  background: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-grey);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
 
-	strong {
-		color: var(--primary-blue);
-	}
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary-blue);
+    transform: rotate(30deg);
+  }
 }
 
 .content-area {

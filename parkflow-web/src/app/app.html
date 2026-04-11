@@ -1,8 +1,14 @@
 <header>
 	<div class="container">
-		<div class="logo">
+		<div class="logo" (click)="goToHome()">
 			<span class="logo-icon">🚗</span>
 			<span class="logo-text">Park<strong>Flow</strong></span>
+		</div>
+
+		<div class="nav-actions">
+			<button class="btn-settings" (click)="goToSettings()">
+				<span class="material-symbols-outlined">settings</span>
+	 		</button>
 		</div>
 	</div>
 </header>
