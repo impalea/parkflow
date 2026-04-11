@@ -20,6 +20,11 @@ export interface CheckOutPreview {
 	exitTime: string;
 	duration: string;
 	totalAmount: string;
+	isPricingActive: boolean;
+}
+
+export interface CheckOut {
+	exitTime: string;
 }
 
 @Injectable({
@@ -38,7 +43,7 @@ export class Ticket {
     return this.http.get<CheckOutPreview>(`${this.apiUrl}/checkout/preview/${ticketId}`);
   }
 
-  confirmCheckOut(ticketId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/checkout/${ticketId}`, {});
+  confirmCheckOut(ticketId: number, data: CheckOut): Observable<any> {
+    return this.http.post(`${this.apiUrl}/checkout/${ticketId}`, data);
   }
 }

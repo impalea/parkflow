@@ -107,9 +107,19 @@ export class Dashboard implements OnInit {
 	}
 
 	confirmCheckOut() {
-		if (!this.currentTicketId) return;
+		const data = this.checkOutData();
 
-		this.ticketService.confirmCheckOut(this.currentTicketId).subscribe({
+		if (!this.currentTicketId || !data)
+		{
+			console.error('Error confirming check-out: Missing ticket ID or check-out data');
+			return;
+		}
+
+		const payload = {
+			exitTime: data.exitTime
+		};
+
+		this.ticketService.confirmCheckOut(this.currentTicketId, payload).subscribe({
 			next: () => {
 				this.isCheckOutModalOpen.set(false);
 				this.loadDashboard();

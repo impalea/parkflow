@@ -76,7 +76,7 @@
 										required minlength="7" maxlength="7" placeholder="ABC1234"
 										#plate="ngModel" [(ngModel)]="checkInForm.licensePlate"
 										(input)="checkInForm.licensePlate = checkInForm.licensePlate.toUpperCase().replace(/[^A-Z0-9]/g, '')">
-										
+
 						@if (plate.invalid && plate.touched) {
 							<small class="error-text">Este campo é obrigatório e deve ter 7 caracteres.</small>
 						}
@@ -133,9 +133,20 @@
           </div>
         </div>
 
-        <p class="warning-box">
-          ⚠️ Calcule o valor manualmente com base no tempo de permanência.
-        </p>
+				<div class="checkout-footer-info">
+        @if (checkOutData()?.isPricingActive) {
+          <div class="price-pill">
+            <label>Valor Total</label>
+            <h2 class="amount">
+              {{ checkOutData()?.totalAmount | currency:'BRL' }}
+            </h2>
+          </div>
+        } @else {
+          <p class="warning-box">
+          	⚠️ Calcule o valor manualmente com base no tempo de permanência.
+        	</p>
+        }
+      	</div>
       </div>
 
       <div class="modal-footer">
