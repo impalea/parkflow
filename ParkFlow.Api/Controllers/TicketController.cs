@@ -6,9 +6,9 @@ using ParkFlow.Api.Models;
 
 namespace ParkFlow.Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class TicketController : ControllerBase
+	[ApiController]
+	[Route("api/[controller]")]
+	public class TicketController : ControllerBase
 	{
 		private readonly AppDbContext _context;
 
@@ -46,7 +46,7 @@ namespace ParkFlow.Api.Controllers
 					var alreadyInThePark = await _context.Tickets
 						.AnyAsync(t => t.VehicleId == vehicle.Id && !t.ExitTime.HasValue);
 
-        			if (alreadyInThePark) return BadRequest(new { Message = "This vehicle already has an active check-in." });
+					if (alreadyInThePark) return BadRequest(new { Message = "This vehicle already has an active check-in." });
 
 					vehicle.Model = request.Model;
 					vehicle.Color = request.Color;
@@ -118,7 +118,18 @@ namespace ParkFlow.Api.Controllers
 			if (ticket.Vehicle == null || ticket.ParkingSpot == null)
 				return StatusCode(500, new { Message = "Internal consistency error: Vehicle or Spot data missing." });
 
+			var priceConfig = await _context.PriceConfigs.FirstOrDefaultAsync(p => p.Id == 1);
+
 			var now = DateTime.Now;
+			decimal calculatedAmount = 0;
+			bool pricingActive = false;
+
+			if (priceConfig != null && priceConfig.IsActive)
+			{
+				pricingActive = true;
+				calculatedAmount = CalculateAmount(ticket.EntryTime, now, priceConfig);
+			}
+
 			TimeSpan duration = now - ticket.EntryTime;
 
 			var response = new CheckOutPreviewResponse
@@ -131,15 +142,19 @@ namespace ParkFlow.Api.Controllers
 				EntryTime = ticket.EntryTime,
 				ExitTime = now,
 				Duration = $"{(int)duration.TotalHours:D2}:{duration.Minutes:D2}h",
-				TotalAmount = 0
+				TotalAmount = calculatedAmount,
+				IsPricingActive = pricingActive
 			};
 
 			return Ok(response);
 		}
 
 		[HttpPost("checkout/{id}")]
-		public async Task<IActionResult> ConfirmCheckOut(int id)
+		public async Task<IActionResult> ConfirmCheckOut(int id, [FromBody] CheckOutRequest request)
 		{
+			if (request.ExitTime == null || !request.ExitTime.HasValue)
+				return BadRequest(new { Message = "Invalid checkout request." });
+
 			using var transaction = await _context.Database.BeginTransactionAsync();
 
 			try
@@ -150,11 +165,24 @@ namespace ParkFlow.Api.Controllers
 
 				if (ticket == null) return BadRequest(new { Message = "Ticket already finalized or not found." });
 
-				ticket.ExitTime = DateTime.Now;
+				if (request.ExitTime.Value < ticket.EntryTime)
+					return BadRequest(new { Message = "Exit time cannot be earlier than entry time." });
+
+				if(request.ExitTime.Value > DateTime.Now.AddMinutes(1))
+					return BadRequest(new { Message = "Exit time cannot be in the future." });
+
+				ticket.ExitTime = request.ExitTime.Value;
 				ticket.IsPaid = true;
 
+				var priceConfig = await _context.PriceConfigs.FirstOrDefaultAsync(p => p.Id == 1);
+
+				if (priceConfig != null && priceConfig.IsActive)
+				{
+					ticket.TotalAmount = CalculateAmount(ticket.EntryTime, request.ExitTime.Value, priceConfig);
+				}
+
 				if (ticket.ParkingSpot != null)
-        		{
+				{
 					ticket.ParkingSpot.IsOccupied = false;
 					_context.ParkingSpots.Update(ticket.ParkingSpot);
 				}
@@ -173,6 +201,25 @@ namespace ParkFlow.Api.Controllers
 				await transaction.RollbackAsync();
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
+		}
+
+		private decimal CalculateAmount(DateTime entry, DateTime exit, PriceConfigModel config)
+		{
+			if (!config.IsActive) return 0;
+
+			TimeSpan duration = exit - entry;
+			double totalMinutes = duration.TotalMinutes;
+
+			if (totalMinutes <= config.ToleranceMinutes) return 0;
+
+			if (totalMinutes <= 60) return config.FirstHourValue;
+
+			int totalHours = (int)Math.Ceiling(totalMinutes / 60.0);
+			int additionalHours = totalHours - 1;
+
+			decimal total = config.FirstHourValue + (additionalHours * config.AdditionalHourValue);
+
+			return total > config.DailyValue ? config.DailyValue : total;
 		}
 	}
 }

@@ -33,3 +33,8 @@ GET {{host}}/api/ticket/checkout/preview/1
 
 ### Confirmar Check-out
 POST {{host}}/api/ticket/checkout/1
+Content-Type: application/json
+
+{
+	"exitTime": ""
+}
