@@ -1,0 +1,55 @@
+<div class="container">
+  <header class="config-header">
+    <button class="btn-back" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <h1>Configurações de Tarifas</h1>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="saveSettings()">
+
+    <div class="card card-status">
+      <div class="card-info">
+        <h3>Cálculo Automático</h3>
+        <p>Define se o sistema deve calcular o valor a ser pago nos checkouts.</p>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" formControlName="isActive">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="card card-grid" [class.disabled-opacity]="!form.get('isActive')?.value">
+      <div class="form-item">
+        <label>Tolerância (minutos)</label>
+        <input type="number" formControlName="toleranceMinutes">
+      </div>
+
+      <div class="form-item">
+        <label>Valor da 1ª Hora (R$)</label>
+        <input type="number" formControlName="firstHourValue">
+      </div>
+
+      <div class="form-item">
+        <label>Hora Adicional (R$)</label>
+        <input type="number" formControlName="additionalHourValue">
+      </div>
+
+      <div class="form-item">
+        <label>Valor Diária (R$)</label>
+        <input type="number" formControlName="dailyValue">
+      </div>
+    </div>
+
+    <footer class="config-footer">
+      <!-- @if (message().text) {
+        <div class="msg-feedback" [class]="message().type">
+          {{ message().text }}
+        </div>
+      } -->
+      <button type="submit" class="btn-save" [disabled]="isLoading() || form.invalid || form.pristine">
+        Salvar Configurações
+      </button>
+    </footer>
+  </form>
+</div>
