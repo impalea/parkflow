@@ -219,7 +219,13 @@ namespace ParkFlow.Api.Controllers
 
 			decimal total = config.FirstHourValue + (additionalHours * config.AdditionalHourValue);
 
-			return total > config.DailyValue ? config.DailyValue : total;
+			if (total > config.DailyValue || totalMinutes > 1440)
+			{
+				int totalDays = (int)Math.Ceiling(totalMinutes / 1440.0);
+				total = totalDays * config.DailyValue;
+			}
+
+			return total;
 		}
 	}
 }
