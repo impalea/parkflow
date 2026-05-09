@@ -7,10 +7,10 @@ POST {{host}}/api/ticket/checkin
 Content-Type: application/json
 
 {
-  "licensePlate": "BRA2E24",
-  "model": "Onix",
-  "color": "Branco",
-  "parkingSpotId": null
+	"licensePlate": "BRA2E24",
+	"model": "Onix",
+	"color": "Branco",
+	"parkingSpotId": null
 }
 
 ### Realizar Check-in com vaga específica
@@ -18,10 +18,10 @@ POST {{host}}/api/ticket/checkin
 Content-Type: application/json
 
 {
-  "licensePlate": "BRA3K56",
-  "model": "HB20",
-  "color": "Preto",
-  "parkingSpotId": 3
+	"licensePlate": "BRA3K56",
+	"model": "HB20",
+	"color": "Preto",
+	"parkingSpotId": 3
 }
 
 
@@ -38,3 +38,17 @@ Content-Type: application/json
 {
 	"exitTime": ""
 }
+
+### Listar vagas
+GET {{host}}/api/parkingspot
+
+### Criar vaga
+POST {{host}}/api/parkingspot
+Content-Type: application/json
+
+{
+	"spotNumber": "X-99"
+}
+
+### Excluir vaga
+DELETE {{host}}/api/parkingspot/11

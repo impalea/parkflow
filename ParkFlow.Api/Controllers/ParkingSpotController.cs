@@ -2,21 +2,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParkFlow.Api.Data;
 using ParkFlow.Api.DTOs.ParkingSpots;
+using ParkFlow.Api.Models;
 
 namespace ParkFlow.Api.Controllers
 {
 	[ApiController]
-    [Route("api/[controller]")]
-    public class ParkingSpotController : ControllerBase
-    {
+	[Route("api/[controller]")]
+	public class ParkingSpotController : ControllerBase
+	{
 		private readonly AppDbContext _context;
 
-        public ParkingSpotController(AppDbContext context)
+		public ParkingSpotController(AppDbContext context)
 		{
 			_context = context;
 		}
 
-        [HttpGet("dashboard")]
+		[HttpGet("dashboard")]
 		public async Task<IActionResult> GetDashboard()
 		{
 			var spots = await _context.ParkingSpots
@@ -57,5 +58,73 @@ namespace ParkFlow.Api.Controllers
 
 			return Ok(spots);
 		}
-    }
+
+		[HttpGet]
+		public async Task<IActionResult> GetAll()
+		{
+			var spots = await _context.ParkingSpots
+				.Where(s => s.IsActive)
+				.OrderBy(s => s.SpotNumber)
+				.Select(s => new GetParkingSpotResponse
+				{
+					Id = s.Id,
+					SpotNumber = s.SpotNumber,
+					IsOccupied = s.IsOccupied
+				})
+				.OrderBy(s => s.SpotNumber)
+				.ToListAsync();
+
+			return Ok(spots);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Create([FromBody] CreateParkingSpotRequest request)
+		{
+			var existingSpot = await _context.ParkingSpots
+				.FirstOrDefaultAsync(s => s.SpotNumber.ToLower() == request.SpotNumber.ToLower());
+
+			if (existingSpot != null)
+			{
+				if (existingSpot.IsActive)
+					return BadRequest(new { Message = "There is already an active parking spot with this number." });
+
+				existingSpot.IsActive = true;
+
+				_context.Entry(existingSpot).State = EntityState.Modified;
+				await _context.SaveChangesAsync();
+
+				return Ok(existingSpot);
+			}
+
+			var spot = new ParkingSpotModel
+			{
+				SpotNumber = request.SpotNumber,
+				IsOccupied = false,
+				IsActive = true
+			};
+
+			_context.ParkingSpots.Add(spot);
+			await _context.SaveChangesAsync();
+
+			return CreatedAtAction(nameof(GetAll), new { id = spot.Id }, spot);
+		}
+
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> Delete(int id)
+		{
+			var spot = await _context.ParkingSpots.FindAsync(id);
+
+			if (spot == null) return NotFound(new { Message = "Parking spot not found." });
+
+			if (spot.IsOccupied)
+				return BadRequest(new { Message = "It is not possible to remove a spot that is currently occupied." });
+
+			spot.IsActive = false;
+
+			_context.Entry(spot).State = EntityState.Modified;
+			await _context.SaveChangesAsync();
+
+			return NoContent();
+		}
+	}
 }
