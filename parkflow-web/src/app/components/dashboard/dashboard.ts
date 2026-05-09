@@ -1,5 +1,5 @@
 import { Component, computed, OnInit, signal } from '@angular/core';
-import { ParkingSpot, ParkingSpotDashboard } from '../../services/parking-spot/parking-spot';
+import { ParkingSpotService, ParkingSpotDashboard } from '../../services/parking-spot/parking-spot';
 import { CheckOutPreview, Ticket } from '../../services/ticket/ticket';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -39,7 +39,7 @@ export class Dashboard implements OnInit {
 	}
 
 	constructor(
-		private parkingSpotService: ParkingSpot,
+		private parkingSpotService: ParkingSpotService,
 		private ticketService: Ticket
 	) { }
 
