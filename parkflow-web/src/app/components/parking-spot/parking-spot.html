@@ -1,0 +1,48 @@
+<div class="container">
+	<header class="config-header">
+		<button class="btn-back" (click)="goBack()">
+			<span class="material-symbols-outlined">arrow_back</span>
+		</button>
+		<h1>Gerenciar Vagas</h1>
+	</header>
+
+	<section class="card card-new-spot">
+		<div class="card-info">
+			<h3>Adicionar Vaga</h3>
+			<p>Cadastre uma nova vaga para o pátio (ex: A-01, B-05).</p>
+		</div>
+
+		<div class="form-item-row">
+			<input type="text" placeholder="Insira o identificador" [(ngModel)]="newSpotNumber" [disabled]="isLoading()" (keyup.enter)="createSpot()">
+			<button class="btn btn-save" [disabled]="isLoading() || !newSpotNumber().trim()" (click)="createSpot()">
+				<span class="material-symbols-outlined">add</span>
+			</button>
+		</div>
+	</section>
+
+	<div class="list-title">
+		<h2>Vagas Ativas</h2>
+	</div>
+
+	<section class="card-grid">
+		@for (spot of spots(); track spot.id) {
+			<div class="card card-spot" [class.is-occupied]="spot.isOccupied">
+				<div class="spot-details">
+					<label>Identificador</label>
+					<span>{{ spot.spotNumber }}</span>
+					<p class="status-text" [class.occupied]="spot.isOccupied">
+						{{ spot.isOccupied ? 'Ocupada' : 'Disponível' }}
+					</p>
+				</div>
+
+				<button class="btn btn-delete"	(click)="deleteSpot(spot.id)" [disabled]="spot.isOccupied">
+					<span class="material-symbols-outlined">delete</span>
+				</button>
+			</div>
+		} @empty {
+			<div class="empty-state">
+				<p>Ainda não existem vagas configuradas.</p>
+			</div>
+		}
+	</section>
+</div>
