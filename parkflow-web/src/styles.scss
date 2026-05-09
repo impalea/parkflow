@@ -18,6 +18,10 @@
 	--tertiary-grey: #e8eaed;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
 	font-family: var(--primary-font);
 	font-size: var(--body-size);
@@ -33,4 +37,22 @@ h1, h2, h3, h4, h5, h6 {
 
 button, input, select, textarea {
 	font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-blue);
 }
