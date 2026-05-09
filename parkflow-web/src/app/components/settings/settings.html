@@ -1,0 +1,32 @@
+<div class="container">
+	<header class="config-header">
+		<button class="btn-back" (click)="goToHome()">
+			<span class="material-symbols-outlined">arrow_back</span>
+		</button>
+		<h1>Configurações do Sistema</h1>
+	</header>
+
+	<div class="settings-grid">
+		<article class="settings-card" (click)="goTo('settings/prices')">
+			<div class="card-icon">
+				<span class="material-symbols-outlined">payments</span>
+			</div>
+			<div class="card-info">
+				<h3>Tarifas e Preços</h3>
+				<p>Ajuste valores de hora, diárias e tempo de tolerância.</p>
+			</div>
+			<span class="material-symbols-outlined arrow">chevron_right</span>
+		</article>
+
+		<article class="settings-card" (click)="goTo('settings/parking-spots')">
+			<div class="card-icon">
+				<span class="material-symbols-outlined">garage</span>
+			</div>
+			<div class="card-info">
+				<h3>Gerenciamento de Vagas</h3>
+				<p>Adicione, remova ou visualize os identificadores das vagas do pátio.</p>
+			</div>
+			<span class="material-symbols-outlined arrow">chevron_right</span>
+		</article>
+	</div>
+</div>

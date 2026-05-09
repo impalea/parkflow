@@ -1,0 +1,95 @@
+.config-header {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	padding: 10px 0;
+
+	h1 {
+		color: var(--primary-text);
+	}
+
+	.btn-back {
+		display: flex;
+		padding: 8px;
+		cursor: pointer;
+		background: none;
+		border: 1px solid rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
+		transition: all 0.2s;
+
+		&:hover {
+			background: rgba(0, 0, 0, 0.05);
+		}
+	}
+}
+
+.settings-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 1.5rem;
+}
+
+.settings-card {
+	background: white;
+	padding: 1.5rem;
+	border-radius: 12px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+	position: relative;
+
+	&:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+		border-color: var(--primary-blue);
+
+		.card-icon {
+			background: var(--primary-blue);
+			color: white;
+		}
+
+		.arrow {
+			color: var(--primary-blue);
+			transform: translateX(5px);
+		}
+	}
+}
+
+.card-info {
+	flex: 1;
+
+	h3 {
+		margin: 0;
+		color: var(--primary-text);
+	}
+
+	p {
+		margin: 4px 0 0;
+		font-size: 0.9rem;
+		color: var(--secondary-text);
+	}
+}
+
+.card-icon {
+	width: 56px;
+	height: 56px;
+	background: var(--tertiary-grey);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--primary-grey);
+	transition: all 0.2s;
+
+	span {
+		font-size: 2rem;
+	}
+}
+
+.arrow {
+	color: var(--primary-grey);
+	transition: all 0.2s;
+}
