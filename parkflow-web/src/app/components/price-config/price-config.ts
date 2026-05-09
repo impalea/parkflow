@@ -73,7 +73,7 @@ export class PriceConfig implements OnInit {
 	}
 
 	goBack() {
-		this.router.navigate(['/']);
+		this.router.navigate(['/settings']);
 	}
 
 	private toggleInputs(active: boolean) {
