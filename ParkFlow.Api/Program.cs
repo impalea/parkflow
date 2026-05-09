@@ -6,16 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
-                     ?? throw new InvalidOperationException("'AllowedOrigins' not found in appsettings.json.");
+					 ?? throw new InvalidOperationException("'AllowedOrigins' not found in appsettings.json.");
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("ParkFlowCors", policy =>
-    {
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+	options.AddPolicy("ParkFlowCors", policy =>
+	{
+		policy.WithOrigins(allowedOrigins)
+			  .AllowAnyHeader()
+			  .AllowAnyMethod();
+	});
 });
 
 builder.Services.AddOpenApi();

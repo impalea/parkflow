@@ -1,9 +1,9 @@
 namespace ParkFlow.Api.DTOs.ParkingSpots
 {
-    public class DashboardResponse
-    {
+	public class DashboardResponse
+	{
 		public int ParkingSpotId { get; set; }
-		public string SpotNumber { get; set; } = "";
+		public string SpotNumber { get; set; } = string.Empty;
 		public bool IsOccupied { get; set; }
 
 		public int? TicketId { get; set; }
@@ -11,5 +11,5 @@ namespace ParkFlow.Api.DTOs.ParkingSpots
 		public string? Model { get; set; }
 		public string? Color { get; set; }
 		public DateTime? EntryTime { get; set; }
-    }
+	}
 }

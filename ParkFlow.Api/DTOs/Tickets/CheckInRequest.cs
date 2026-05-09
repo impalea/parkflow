@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParkFlow.Api.DTOs.Tickets
 {
-    public class CheckInRequest
+	public class CheckInRequest
 	{
 		[Required(ErrorMessage = "License plate is required.")]
 		[StringLength(7, MinimumLength = 7, ErrorMessage = "License plate must have 7 characters.")]
