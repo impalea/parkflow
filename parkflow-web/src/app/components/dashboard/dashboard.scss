@@ -6,7 +6,6 @@
 	padding: 10px 0;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-
 	@media (max-width: 768px) {
 		flex-direction: column;
 		align-items: flex-start;
@@ -163,7 +162,7 @@
 	border-radius: 8px;
 	font-weight: bold;
 	cursor: pointer;
-	transition: filter 0.2s, transform 0.1s;
+	transition: filter 0.2s, transform 0.1s, background 0.2s, color 0.2s;;
 
 	&:active:not(:disabled) {
 		transform: scale(0.98);
@@ -196,8 +195,6 @@
 			background-color: var(--tertiary-grey) !important;
 			color: var(--primary-grey) !important;
 			cursor: not-allowed;
-			transform: scale(1);
-    	filter: brightness(100%);
 		}
 	}
 

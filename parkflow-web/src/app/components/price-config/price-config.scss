@@ -79,10 +79,9 @@
 		}
 
 		&:disabled {
-			background-color: var(--bg-color);
-			color: var(--primary-grey);
+			opacity: 0.5;
+			filter: brightness(80%);
 			cursor: not-allowed;
-			border-color: rgba(0, 0, 0, 0.1);
 		}
 	}
 }
@@ -157,8 +156,5 @@
 	&:disabled {
 		opacity: 0.5;
 		cursor: not-allowed;
-		transform: scale(1);
-    filter: brightness(100%);
-		pointer-events: none;
 	}
 }
