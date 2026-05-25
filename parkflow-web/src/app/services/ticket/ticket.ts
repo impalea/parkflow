@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface CheckIn {
-  licensePlate: string;
-  model: string;
+	licensePlate: string;
+	model: string;
 	color: string;
 	parkingSpotId: number;
 }
@@ -28,22 +28,28 @@ export interface CheckOut {
 }
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class Ticket {
-  private apiUrl = environment.apiUrl + '/api/ticket';
+	private apiUrl = environment.apiUrl + '/api/ticket';
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  createCheckIn(data: CheckIn): Observable<any> {
-    return this.http.post(`${this.apiUrl}/checkin`, data);
-  }
+	createCheckIn(data: CheckIn): Observable<any> {
+		return this.http.post(`${this.apiUrl}/checkin`, data);
+	}
 
 	getCheckOutPreview(ticketId: number): Observable<CheckOutPreview> {
-    return this.http.get<CheckOutPreview>(`${this.apiUrl}/checkout/preview/${ticketId}`);
-  }
+		return this.http.get<CheckOutPreview>(`${this.apiUrl}/checkout/preview/${ticketId}`);
+	}
 
-  confirmCheckOut(ticketId: number, data: CheckOut): Observable<any> {
-    return this.http.post(`${this.apiUrl}/checkout/${ticketId}`, data);
-  }
+	confirmCheckOut(ticketId: number, data: CheckOut): Observable<any> {
+		return this.http.post(`${this.apiUrl}/checkout/${ticketId}`, data);
+	}
+
+	generateReceipt(ticketId: number): Observable<Blob> {
+		return this.http.get(`${this.apiUrl}/receipt/${ticketId}`, {
+			responseType: 'blob'
+		});
+	}
 }
