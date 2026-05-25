@@ -21,7 +21,7 @@
 	</section>
 
 	<div class="list-title">
-		<h2>Vagas Ativas</h2>
+		<h3>Vagas Ativas</h3>
 	</div>
 
 	<section class="card-grid">
@@ -40,8 +40,10 @@
 				</button>
 			</div>
 		} @empty {
-			<div class="empty-state">
-				<p>Ainda não existem vagas configuradas.</p>
+			<div class="empty-state-container">
+				<span class="material-symbols-outlined empty-icon">car_crash</span>
+				<h2>O pátio está vazio!</h2>
+				<p>Parece que ainda não há vagas aqui. Comece adicionando algumas vagas para estruturar seu estacionamento e dar vida ao seu Dashboard!</p>
 			</div>
 		}
 	</section>
