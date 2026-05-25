@@ -215,6 +215,9 @@ namespace ParkFlow.Api.Controllers
 
 			if (ticket == null) return NotFound(new { Message = "Ticket not found." });
 
+			if (ticket.ExitTime == null || !ticket.ExitTime.HasValue)
+				return BadRequest(new { Message = "Cannot generate receipt for an active ticket." });
+
 			TimeSpan duration = (ticket.ExitTime ?? DateTime.Now) - ticket.EntryTime;
 
 			var pdfBytes = Document.Create(container =>
