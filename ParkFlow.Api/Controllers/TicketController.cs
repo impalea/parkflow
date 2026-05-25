@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using ParkFlow.Api.Data;
 using ParkFlow.Api.DTOs.Tickets;
 using ParkFlow.Api.Models;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace ParkFlow.Api.Controllers
 {
@@ -201,6 +204,52 @@ namespace ParkFlow.Api.Controllers
 				await transaction.RollbackAsync();
 				return StatusCode(500, $"An error occurred: {ex.Message}");
 			}
+		}
+
+		[HttpGet("receipt/{id}")]
+		public async Task<IActionResult> GenerateReceipt(int id)
+		{
+			var ticket = await _context.Tickets
+				.Include(t => t.Vehicle)
+				.FirstOrDefaultAsync(t => t.Id == id);
+
+			if (ticket == null) return NotFound(new { Message = "Ticket not found." });
+
+			TimeSpan duration = (ticket.ExitTime ?? DateTime.Now) - ticket.EntryTime;
+
+			var pdfBytes = Document.Create(container =>
+			{
+				container.Page(page =>
+				{
+					page.ContinuousSize(80, Unit.Millimetre);
+					page.Margin(5, Unit.Millimetre);
+					page.DefaultTextStyle(x => x.FontSize(9).FontFamily(Fonts.Arial));
+
+					page.Content().Column(col =>
+					{
+						col.Item().Text("PARKFLOW ESTACIONAMENTO").Bold().FontSize(12).AlignCenter();
+						col.Item().Text("----------------------------------------").AlignCenter();
+
+						col.Item().Text($"Placa: {ticket.Vehicle?.LicensePlate}").Bold();
+						col.Item().Text($"Veículo: {ticket.Vehicle?.Model} ({ticket.Vehicle?.Color})");
+						col.Item().Text("----------------------------------------").AlignCenter();
+
+						col.Item().Text($"Entrada: {ticket.EntryTime:dd/MM/yyyy HH:mm}");
+						col.Item().Text($"Saída: {ticket.ExitTime:dd/MM/yyyy HH:mm}");
+						col.Item().Text($"Permanência: {(int)duration.TotalHours:D2}:{duration.Minutes:D2}h");
+
+						col.Item().Row(row =>
+						{
+							row.RelativeItem().Text("TOTAL PAGO:").Bold().FontSize(11);
+							row.RelativeItem().AlignRight().Text($"{ticket.TotalAmount:C}").Bold().FontSize(11);
+						});
+
+						col.Item().PaddingTop(15).Text("Obrigado pela preferência!").AlignCenter().Italic();
+					});
+				});
+			}).GeneratePdf();
+
+			return File(pdfBytes, "application/pdf");
 		}
 
 		private decimal CalculateAmount(DateTime entry, DateTime exit, PriceConfigModel config)
