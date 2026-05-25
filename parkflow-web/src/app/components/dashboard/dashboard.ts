@@ -17,11 +17,11 @@ export class Dashboard implements OnInit {
 	totalSpots = computed(() => this.spots().length);
 
 	totalOccupied = computed(() =>
-  	this.spots().filter(s => s.isOccupied).length
+		this.spots().filter(s => s.isOccupied).length
 	);
 
 	totalAvailable = computed(() =>
-  	this.spots().filter(s => !s.isOccupied).length
+		this.spots().filter(s => !s.isOccupied).length
 	);
 
 	selectedSpot = signal<ParkingSpotDashboard | null>(null);
@@ -29,6 +29,8 @@ export class Dashboard implements OnInit {
 
 	isCheckInModalOpen = signal(false);
 	isCheckOutModalOpen = signal(false);
+
+	generateReceipt = signal(false);
 
 	currentTicketId = 0;
 	checkInForm = {
@@ -119,10 +121,17 @@ export class Dashboard implements OnInit {
 			exitTime: data.exitTime
 		};
 
+		const ticketIdToPrint = this.currentTicketId;
+
 		this.ticketService.confirmCheckOut(this.currentTicketId, payload).subscribe({
 			next: () => {
-				this.isCheckOutModalOpen.set(false);
 				this.loadDashboard();
+
+				if (this.generateReceipt()) {
+					this.printReceipt(ticketIdToPrint);
+				}
+
+				this.closeCheckOutModal();
 			},
 			error: (err: any) => {
 				console.error('Error confirming check-out:', err);
@@ -141,10 +150,38 @@ export class Dashboard implements OnInit {
 		this.isCheckOutModalOpen.set(false);
 		this.checkOutData.set(null);
 		this.currentTicketId = 0;
+		this.generateReceipt.set(false);
 	}
 
 	formatVehicleDetails(model?: string, color?: string): string {
 		return [model, color].filter(item => !!item).join(', ');
+	}
+
+	private printReceipt(ticketId: number): void {
+		this.ticketService.generateReceipt(ticketId).subscribe({
+			next: (blob) => {
+				const blobUrl = URL.createObjectURL(blob);
+				const iframe = document.createElement('iframe');
+
+				iframe.style.display = 'none';
+				iframe.src = blobUrl;
+				document.body.appendChild(iframe);
+
+				iframe.onload = () => {
+					iframe.contentWindow?.focus();
+					iframe.contentWindow?.print();
+
+					setTimeout(() => {
+						document.body.removeChild(iframe);
+						URL.revokeObjectURL(blobUrl);
+					}, 1000);
+				};
+			},
+			error: (err) => {
+				console.error('Error fetching receipt PDF:', err);
+				alert('Falha ao gerar o recibo para impressão.');
+			}
+		});
 	}
 }
 

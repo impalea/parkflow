@@ -56,20 +56,26 @@
 					}
 				</div>
 			</article>
+		} @empty {
+			<div class="empty-state-container">
+				<span class="material-symbols-outlined empty-icon">car_crash</span>
+				<h2>Nenhum carro vai estacionar aqui... ainda!</h2>
+				<p>Um pátio sem vagas é só um espaço vazio! Para registrar as entradas e saídas, navegue até o Gerenciamento de Vagas e crie uma vaga.</p>
+			</div>
 		}
 	</section>
 </div>
 
 @if (isCheckInModalOpen()) {
-  <div class="overlay" (click)="closeCheckInModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Check-in: Vaga {{ selectedSpot()?.spotNumber }}</h2>
-        <button class="btn-close" (click)="closeCheckInModal()">×</button>
-      </div>
+	<div class="overlay" (click)="closeCheckInModal()">
+		<div class="modal" (click)="$event.stopPropagation()">
+			<div class="modal-header">
+				<h2>Check-in: Vaga {{ selectedSpot()?.spotNumber }}</h2>
+				<button class="btn-close" (click)="closeCheckInModal()">×</button>
+			</div>
 
 			<form #checkInFormRef="ngForm" (ngSubmit)="createCheckIn()">
-      	<div class="modal-body">
+				<div class="modal-body">
 					<div class="form-item">
 						<label>Placa do Veículo *</label>
 						<input type="text" id="plate" name="plate" class="license-plate"
@@ -104,55 +110,66 @@
 					<button type="submit" class="btn btn-checkin-confirm" [disabled]="checkInFormRef.invalid">Confirmar Entrada</button>
 				</div>
 			</form>
-    </div>
-  </div>
+		</div>
+	</div>
 }
 
 @if (isCheckOutModalOpen()) {
-  <div class="overlay" (click)="closeCheckOutModal()">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>Resumo de Saída</h2>
-        <button class="btn-close" (click)="closeCheckOutModal()">×</button>
-      </div>
+	<div class="overlay" (click)="closeCheckOutModal()">
+		<div class="modal" (click)="$event.stopPropagation()">
+			<div class="modal-header">
+				<h2>Resumo de Saída</h2>
+				<button class="btn-close" (click)="closeCheckOutModal()">×</button>
+			</div>
 
-      <div class="modal-body">
-        <div class="summary-item">
-          <label>Veículo</label>
-          <p>{{ formatVehicleDetails(checkOutData()?.model, checkOutData()?.color) }} - <strong class="license-plate">{{ checkOutData()?.licensePlate }}</strong></p>
-        </div>
+			<div class="modal-body">
+				<div class="summary-item">
+					<label>Veículo</label>
+					<p>{{ formatVehicleDetails(checkOutData()?.model, checkOutData()?.color) }} - <strong class="license-plate">{{ checkOutData()?.licensePlate }}</strong></p>
+				</div>
 
-        <div class="summary-grid">
-          <div class="summary-item">
-            <label>Entrada</label>
-            <p>{{ checkOutData()?.entryTime | date:'E, dd/MM/yyyy, HH:mm' | titlecase }}</p>
-          </div>
-          <div class="summary-item">
-            <label>Permanência</label>
-            <p class="time-highlight">{{ checkOutData()?.duration }}</p>
-          </div>
-        </div>
+				<div class="summary-grid">
+					<div class="summary-item">
+						<label>Entrada</label>
+						<p>{{ checkOutData()?.entryTime | date:'E, dd/MM/yyyy, HH:mm' | titlecase }}</p>
+					</div>
+					<div class="summary-item">
+						<label>Permanência</label>
+						<p class="time-highlight">{{ checkOutData()?.duration }}</p>
+					</div>
+				</div>
 
 				<div class="checkout-footer-info">
-        @if (checkOutData()?.isPricingActive) {
-          <div class="price-pill">
-            <label>Valor Total</label>
-            <h2 class="amount">
-              {{ checkOutData()?.totalAmount | currency:'BRL' }}
-            </h2>
-          </div>
-        } @else {
-          <p class="warning-box">
-          	⚠️ Calcule o valor manualmente com base no tempo de permanência.
-        	</p>
-        }
-      	</div>
-      </div>
+					@if (checkOutData()?.isPricingActive) {
+						<div class="price-pill">
+							<label>Valor Total</label>
+							<h2 class="amount">
+								{{ checkOutData()?.totalAmount | currency:'BRL' }}
+							</h2>
+						</div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-cancel" (click)="closeCheckOutModal()">Cancelar</button>
-        <button type="button" class="btn btn-checkout-confirm" (click)="confirmCheckOut()">Confirmar Saída</button>
-      </div>
-    </div>
-  </div>
+						<div class="receipt-container">
+							<input type="checkbox" id="printReceipt" class="checkbox"
+										[ngModel]="generateReceipt()"
+										(ngModelChange)="generateReceipt.set($event)">
+
+							<label for="printReceipt">
+								<span class="material-symbols-outlined receipt-icon">receipt_long</span>
+								Imprimir recibo
+							</label>
+						</div>
+					} @else {
+						<p class="warning-box">
+							⚠️ Calcule o valor manualmente com base no tempo de permanência.
+						</p>
+					}
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-cancel" (click)="closeCheckOutModal()">Cancelar</button>
+				<button type="button" class="btn btn-checkout-confirm" (click)="confirmCheckOut()">Confirmar Saída</button>
+			</div>
+		</div>
+	</div>
 }
