@@ -2,7 +2,7 @@
 @port = 5115
 @host = http://{{hostname}}:{{port}}
 
-### Realizar Checkin com vaga aleatória
+### Realizar Check-in com vaga aleatória
 POST {{host}}/api/ticket/checkin
 Content-Type: application/json
 
@@ -52,3 +52,6 @@ Content-Type: application/json
 
 ### Excluir vaga
 DELETE {{host}}/api/parkingspot/11
+
+### Gerar recibo do ticket
+GET {{host}}/api/ticket/receipt/9
