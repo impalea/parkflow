@@ -169,12 +169,15 @@ export class Dashboard implements OnInit {
 
 				iframe.onload = () => {
 					iframe.contentWindow?.focus();
-					iframe.contentWindow?.print();
 
-					setTimeout(() => {
-						document.body.removeChild(iframe);
-						URL.revokeObjectURL(blobUrl);
-					}, 1000);
+					if (iframe.contentWindow) {
+							iframe.contentWindow.onafterprint = () => {
+							document.body.removeChild(iframe);
+							URL.revokeObjectURL(blobUrl);
+						};
+					}
+
+					iframe.contentWindow?.print();
 				};
 			},
 			error: (err) => {
